@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:http/http.dart' as http;
+import 'package:kbook_rafaelbanhos/Blocs/books_bloc.dart';
 import 'package:kbook_rafaelbanhos/Screens/book_details_screen.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -14,50 +17,43 @@ class _HomeScreenState extends State<HomeScreen> {
   String _search;
   int _offset = 0;
 
-  Future<Map> _getBooks() async {
-    http.Response response;
+  var booksBloc = BlocProvider.getBloc<BooksBloc>();
 
-    if (_search == null || _search.isEmpty)
-      response = await http.get(
-          "https://www.googleapis.com/books/v1/volumes?q=flutter&maxResults=10&startIndex=0");
-    else
-      response = await http.get(
-          "https://www.googleapis.com/books/v1/volumes?q=flutter&maxResults=9&startIndex=0");
 
-    return json.decode(response.body);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(25, 179, 190, 1),
-          title: Text('Kentra Challenge'),
-          centerTitle: true,
-        ),
-        body: FutureBuilder(
-          future: _getBooks(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-              case ConnectionState.none:
-                return Container(
-                  width: 200.0,
-                  height: 200.0,
-                  alignment: Alignment.center,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    strokeWidth: 5.0,
-                  ),
-                );
-              default:
-                if (snapshot.hasError)
-                  return Container();
-                else
-                  return _createBooksTable(context, snapshot);
-            }
-          },
-        ));
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(25, 179, 190, 1),
+        title: Text('Kentra Challenge'),
+        centerTitle: true,
+      ),
+      body: FutureBuilder(
+        future: booksBloc.getBooks(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+            case ConnectionState.none:
+              return Container(
+                width: 200.0,
+                height: 200.0,
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  strokeWidth: 5.0,
+                ),
+              );
+            default:
+              if (snapshot.hasError)
+                return Container();
+              else
+                return _createBooksTable(context, snapshot);
+          }
+        },
+      ),
+      floatingActionButton: _buildFloating(),
+    );
   }
 
   int _getCount(List data) {
@@ -117,5 +113,34 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
         });
+  }
+
+  Widget _buildFloating() {
+    return SpeedDial(
+      child: Icon(Icons.sort),
+      backgroundColor: Color.fromRGBO(25, 179, 190, 1),
+      overlayOpacity: 0.4,
+      overlayColor: Colors.black,
+      children: [
+        SpeedDialChild(
+            child: Icon(
+              Icons.library_books,
+              color: Colors.greenAccent,
+            ),
+            backgroundColor: Colors.white,
+            label: "All Books",
+            labelStyle: TextStyle(fontSize: 14),
+            onTap: () {}),
+        SpeedDialChild(
+            child: Icon(
+              Icons.favorite,
+              color: Colors.redAccent,
+            ),
+            backgroundColor: Colors.white,
+            label: "Only Favorites",
+            labelStyle: TextStyle(fontSize: 14),
+            onTap: () {}),
+      ],
+    );
   }
 }
