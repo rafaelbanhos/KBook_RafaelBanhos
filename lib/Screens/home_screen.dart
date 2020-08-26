@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:kbook_rafaelbanhos/Screens/book_details_screen.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,8 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<Map> _getBooks() async {
     http.Response response;
 
-    response = await http.get(
-        "https://www.googleapis.com/books/v1/volumes?q=flutter&maxResults=20&startIndex=0");
+    if (_search == null || _search.isEmpty)
+      response = await http.get(
+          "https://www.googleapis.com/books/v1/volumes?q=flutter&maxResults=10&startIndex=0");
+    else
+      response = await http.get(
+          "https://www.googleapis.com/books/v1/volumes?q=flutter&maxResults=9&startIndex=0");
+
     return json.decode(response.body);
   }
 
@@ -78,7 +84,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 300.0,
                 fit: BoxFit.cover,
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            BookDetailsScreen(snapshot.data["items"][index])));
+              },
             );
           else
             return Container(
@@ -88,18 +100,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: <Widget>[
                     Icon(
                       Icons.add,
-                      color: Colors.white,
+                      color: Colors.black,
                       size: 70.0,
                     ),
                     Text(
                       "Carregar mais...",
-                      style: TextStyle(color: Colors.white, fontSize: 22.0),
+                      style: TextStyle(color: Colors.black, fontSize: 22.0),
                     )
                   ],
                 ),
                 onTap: () {
                   setState(() {
-                    _offset += 19;
+                    _offset += 9;
                   });
                 },
               ),
