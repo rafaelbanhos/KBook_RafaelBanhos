@@ -1,16 +1,51 @@
+// Dart imports:
+import 'dart:async';
 import 'dart:convert';
 
+// Package imports:
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:http/http.dart' as http;
 
+// Project imports:
+import 'package:kbook_rafaelbanhos/Models/book_model.dart';
+import 'package:kbook_rafaelbanhos/Services/api.dart';
+
 class BooksBloc extends BlocBase {
+  List<BookModel> books = [];
 
-  Future<Map> getBooks() async {
-    http.Response response;
+  final _booksAvailable$ = StreamController<List<BookModel>>();
 
-    response = await http.get(
-        "https://www.googleapis.com/books/v1/volumes?q=flutter&maxResults=20&startIndex=0");
+  Stream<List<BookModel>> get booksAvailableOut => _booksAvailable$.stream;
 
-    return json.decode(response.body);
+  Future getBooks(int index) async {
+    var result = await Api().get(index);
+    _customDecode(result);
+  }
+
+  _customDecode(http.Response response) {
+    if (response.statusCode == 200) {
+      var decoded = json.decode(response.body);
+
+      var videos = decoded["items"].map<BookModel>((map) {
+        var bookModel = BookModel.fromJson(map);
+        var existAsBook = books.where((book) => book.id == bookModel.id);
+        //avoiding duplicate books and without volume info, description and no imagens.
+        if (existAsBook.length == 0 &&
+            bookModel.hasVolumeInfo() &&
+            bookModel.volumeModel.hasDescription() &&
+            bookModel.volumeModel.hasImageLinks()) return bookModel;
+      }).toList();
+
+      books += videos.where((element) => element != null).toList();
+      _booksAvailable$.sink.add(books);
+    } else {
+      throw Exception("Failed to load videos");
+    }
+  }
+
+  @override
+  void dispose() {
+    _booksAvailable$.close();
+    super.dispose();
   }
 }
