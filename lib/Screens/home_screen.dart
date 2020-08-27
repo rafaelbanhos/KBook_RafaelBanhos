@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // Package imports:
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 // Project imports:
@@ -38,14 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
           title: Text('Kentra Challenge'),
           centerTitle: true,
           actions: [
-            GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => FavoritesScreen()));
-                },
-                child: Icon(Icons.list))
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FavoritesScreen()));
+                  },
+                  child: Icon(Icons.list)),
+            ),
           ],
         ),
         body: StreamBuilder<List<BookModel>>(

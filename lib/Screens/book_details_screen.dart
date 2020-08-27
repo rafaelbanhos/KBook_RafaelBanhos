@@ -93,20 +93,40 @@ class BookDetailsScreen extends StatelessWidget {
                 height: 6,
               ),
               _bookDetails.saleModel.hasBuyLink()
-                  ? RaisedButton(
-                      child: Text('BUY'),
-                      onPressed: () async {
-                        String url = _bookDetails.saleModel.buyLink.toString();
-                        if (await canLaunch(url)) {
-                          await launch(url);
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                      },
+                  ? ButtonTheme(
+                      minWidth: 135,
+                      height: 50,
+                      child: RaisedButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(14.0)),
+                        color: Color.fromRGBO(25, 179, 190, 1),
+                        child: Text(
+                          'BUY',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onPressed: () async {
+                          String url =
+                              _bookDetails.saleModel.buyLink.toString();
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        },
+                      ),
                     )
-                  : RaisedButton(
-                      child: Text('Unavailable'),
-                    )
+                  : ButtonTheme(
+                      minWidth: 135,
+                      height: 50,
+                      child: RaisedButton(
+                        shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(14.0)),
+                        child: Text('Unavailable'),
+                      ),
+                    ),
+              SizedBox(
+                height: 10,
+              )
             ],
           ),
         ),

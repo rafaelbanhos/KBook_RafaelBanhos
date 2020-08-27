@@ -26,7 +26,7 @@ class BooksBloc extends BlocBase {
     if (response.statusCode == 200) {
       var decoded = json.decode(response.body);
 
-      var videos = decoded["items"].map<BookModel>((map) {
+      var items = decoded["items"].map<BookModel>((map) {
         var bookModel = BookModel.fromJson(map);
         var existAsBook = books.where((book) => book.id == bookModel.id);
         //avoiding duplicate books and without volume info, description and no imagens.
@@ -36,10 +36,10 @@ class BooksBloc extends BlocBase {
             bookModel.volumeModel.hasImageLinks()) return bookModel;
       }).toList();
 
-      books += videos.where((element) => element != null).toList();
+      books += items.where((element) => element != null).toList();
       _booksAvailable$.sink.add(books);
     } else {
-      throw Exception("Failed to load videos");
+      throw Exception("Failed to load books");
     }
   }
 

@@ -9,6 +9,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:kbook_rafaelbanhos/Blocs/books_bloc.dart';
 import 'package:kbook_rafaelbanhos/Blocs/favorite_bloc.dart';
 import 'package:kbook_rafaelbanhos/Screens/home_screen.dart';
+import 'package:kbook_rafaelbanhos/Screens/splash_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Kentra Challenge',
         debugShowCheckedModeBanner: false,
-        home: HomeScreen(),
+        theme: ThemeData(fontFamily: "productsans"),
+        home: SplashScreen(),
       ),
     );
   }
