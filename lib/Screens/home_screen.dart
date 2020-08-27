@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    requestBooksFromGoogleApi(1);
+    requestBooksFromGoogleApi(0);
     _scrollController = new ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
   }
