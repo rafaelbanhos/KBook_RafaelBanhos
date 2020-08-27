@@ -6,7 +6,6 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // Project imports:
-import 'package:kbook_rafaelbanhos/Blocs/books_bloc.dart';
 import 'package:kbook_rafaelbanhos/Blocs/favorite_bloc.dart';
 import 'package:kbook_rafaelbanhos/Models/book_model.dart';
 
