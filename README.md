@@ -2,6 +2,9 @@
 
 Kentra tech challenge
 
+
+![Alt text](https://github.com/rafaelbanhos/KBook_RafaelBanhos/blob/master/screenshoots/print1.jpg)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
