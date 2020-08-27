@@ -4,6 +4,7 @@ Kentra tech challenge
 
 
 ![Alt text](https://github.com/rafaelbanhos/KBook_RafaelBanhos/blob/master/screenshoots/print1.jpg)
+![Alt text](https://github.com/rafaelbanhos/KBook_RafaelBanhos/blob/master/screenshoots/print2.jpg)
 
 ## Getting Started
 
